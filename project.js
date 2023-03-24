@@ -9,7 +9,7 @@ let product=document.querySelector(".product")
 let decimanlPoint=document.querySelector(".decimalPoint")
 let equal=document.querySelector(".equal")
 let displayNumbers=document.querySelector(".displayNumbers")
-let numbersSave=[],actualNumber=[],operator=[],result,lastEqual=false
+let numbersSave=[],actualNumber=[],operator=[],result,lastEqual=false,isInfinite=false
 
 
 sqrt.addEventListener("click",()=>{
@@ -51,14 +51,21 @@ equal.addEventListener("click",()=>{
                 break;
             }
         }
-        displayNumbers.innerHTML=result
-        numbersSave=[]
-    operator=[]
-    actualNumber=[]
-    for(let i=0;i<result.toString().length;i++){
-        actualNumber.push(result.toString()[i])
-    }
-    lastEqual=true
+        if(!isFinite(result)){
+            displayNumbers.innerHTML="Math Error"
+            result=0
+            isInfinite=true
+        }else{
+
+            displayNumbers.innerHTML=result
+            numbersSave=[]
+            operator=[]
+            actualNumber=[]
+            for(let i=0;i<result.toString().length;i++){
+                actualNumber.push(result.toString()[i])
+            }
+        }
+        lastEqual=true
 })
 
 deleteButton.addEventListener("click",()=>{
@@ -69,32 +76,65 @@ deleteButton.addEventListener("click",()=>{
 })
 
 division.addEventListener("click",()=>{
-    displayNumbers.innerHTML+="÷"
-    numbersSave.push(Number(actualNumber.join("")))
-    actualNumber=[]
-    operator.push("/")
-    lastEqual=false
+    if(isInfinite){
+        numbersSave=[]
+        actualNumber=[]
+        operator=[]
+        displayNumbers.innerHTML="&nbsp"
+        isInfinite=false
+    }else{
+
+        displayNumbers.innerHTML+="÷"
+        numbersSave.push(Number(actualNumber.join("")))
+        actualNumber=[]
+        operator.push("/")
+        lastEqual=false
+    }
 })
 product.addEventListener("click",()=>{
+    if(isInfinite){
+        numbersSave=[]
+        actualNumber=[]
+        operator=[]
+        displayNumbers.innerHTML="&nbsp"
+        isInfinite=false
+    }else{
     displayNumbers.innerHTML+="×"
     numbersSave.push(Number(actualNumber.join("")))
     actualNumber=[]
     operator.push("*")
     lastEqual=false
+    }
 })
 addition.addEventListener("click",()=>{
+    if(isInfinite){
+        numbersSave=[]
+        actualNumber=[]
+        operator=[]
+        displayNumbers.innerHTML="&nbsp"
+        isInfinite=false
+    }else{
     displayNumbers.innerHTML+="+"
     numbersSave.push(Number(actualNumber.join("")))
     actualNumber=[]
     operator.push("+")
     lastEqual=false
+    }
 })
 subtraction.addEventListener("click",()=>{
+    if(isInfinite){
+        numbersSave=[]
+        actualNumber=[]
+        operator=[]
+        displayNumbers.innerHTML="&nbsp"
+        isInfinite=false
+    }else{
     displayNumbers.innerHTML+="-"
     numbersSave.push(Number(actualNumber.join("")))
     actualNumber=[]
     operator.push("-")
     lastEqual=false
+    }
 })
 
 numbers.forEach(number=>{number.addEventListener("click",()=>{
@@ -111,6 +151,8 @@ numbers.forEach(number=>{number.addEventListener("click",()=>{
 
 
 decimanlPoint.addEventListener("click",()=>{
-    actualNumber.push(".")
-    displayNumbers.innerHTML+="."
+    if(!actualNumber.includes(".")){    
+        actualNumber.push(".")
+        displayNumbers.innerHTML+="."
+    }
 })
