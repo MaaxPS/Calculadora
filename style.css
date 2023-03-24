@@ -30,6 +30,8 @@
   
   .displayNumbers {
     padding-top: 10px;
+    width: 400px;
+    overflow:auto;
     font-size: 3rem;
     padding: 1rem;
     text-align: center;
